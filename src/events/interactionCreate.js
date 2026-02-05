@@ -28,7 +28,7 @@ module.exports = {
                     const expiredTimestamp = Math.round(expirationTime / 1000);
                     return interaction.reply({
                         content: `Please wait, you can use this command again <t:${expiredTimestamp}:R>.`,
-                        ephemeral: true
+                        flags: 64 // Ephemeral
                     });
                 }
             }
@@ -41,15 +41,20 @@ module.exports = {
             } catch (error) {
                 console.error(`Error executing ${interaction.commandName}:`, error);
                 
-                const errorMessage = {
-                    content: 'There was an error while executing this command.',
-                    ephemeral: true
-                };
-                
-                if (interaction.replied || interaction.deferred) {
-                    await interaction.followUp(errorMessage);
-                } else {
-                    await interaction.reply(errorMessage);
+                try {
+                    const errorMessage = {
+                        content: 'There was an error while executing this command.',
+                        flags: 64 // Ephemeral
+                    };
+                    
+                    if (interaction.replied || interaction.deferred) {
+                        await interaction.followUp(errorMessage);
+                    } else {
+                        await interaction.reply(errorMessage);
+                    }
+                } catch (replyError) {
+                    // Interaction may have already been handled
+                    console.error('Could not send error response:', replyError.message);
                 }
             }
         }
@@ -72,11 +77,15 @@ module.exports = {
             } catch (error) {
                 console.error('Error handling button interaction:', error);
                 
-                if (!interaction.replied && !interaction.deferred) {
-                    await interaction.reply({
-                        content: 'An error occurred while processing this action.',
-                        ephemeral: true
-                    });
+                try {
+                    if (!interaction.replied && !interaction.deferred) {
+                        await interaction.reply({
+                            content: 'An error occurred while processing this action.',
+                            flags: 64 // Ephemeral
+                        });
+                    }
+                } catch (replyError) {
+                    console.error('Could not send button error response:', replyError.message);
                 }
             }
         }

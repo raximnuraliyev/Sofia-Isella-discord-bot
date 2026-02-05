@@ -118,7 +118,7 @@ module.exports = {
                         .setTitle('Permission Denied')
                         .setDescription('You need moderator permissions to use this command.')
                 ],
-                ephemeral: true
+                flags: 64 // Ephemeral
             });
         }
         
@@ -279,7 +279,7 @@ async function handleTest(interaction, settings) {
                     .setTitle('Channel Not Set')
                     .setDescription('Please set a welcome channel first using `/welcome channel`.')
             ],
-            ephemeral: true
+            flags: 64 // Ephemeral
         });
     }
     
@@ -292,7 +292,7 @@ async function handleTest(interaction, settings) {
                     .setTitle('Channel Not Found')
                     .setDescription('The configured welcome channel could not be found.')
             ],
-            ephemeral: true
+            flags: 64 // Ephemeral
         });
     }
     
@@ -340,7 +340,7 @@ async function handleTest(interaction, settings) {
                 .setTitle('Test Message Sent')
                 .setDescription(`A test welcome message has been sent to ${channel}.`)
         ],
-        ephemeral: true
+        flags: 64 // Ephemeral
     });
 }
 
@@ -356,7 +356,7 @@ async function handleRulesChannel(interaction) {
                 .setTitle('Rules Channel Updated')
                 .setDescription(`Rules channel set to ${channel}.`)
         ],
-        ephemeral: true
+        flags: 64 // Ephemeral
     });
 }
 
@@ -372,7 +372,7 @@ async function handleRolesChannel(interaction) {
                 .setTitle('Roles Channel Updated')
                 .setDescription(`Roles channel set to ${channel}.`)
         ],
-        ephemeral: true
+        flags: 64 // Ephemeral
     });
 }
 
@@ -388,7 +388,7 @@ async function handleIntroChannel(interaction) {
                 .setTitle('Introduction Channel Updated')
                 .setDescription(`Introduction channel set to ${channel}.`)
         ],
-        ephemeral: true
+        flags: 64 // Ephemeral
     });
 }
 
@@ -404,7 +404,7 @@ async function handleMainChannel(interaction) {
                 .setTitle('Main Channel Updated')
                 .setDescription(`Main channel set to ${channel}.`)
         ],
-        ephemeral: true
+        flags: 64 // Ephemeral
     });
 }
 
@@ -421,7 +421,7 @@ async function handleImage(interaction) {
                     .setTitle('Welcome Image Removed')
                     .setDescription('The welcome image has been removed.')
             ],
-            ephemeral: true
+            flags: 64 // Ephemeral
         });
     }
     
@@ -436,7 +436,7 @@ async function handleImage(interaction) {
                     .setTitle('Invalid URL')
                     .setDescription('Please provide a valid image URL.')
             ],
-            ephemeral: true
+            flags: 64 // Ephemeral
         });
     }
     
@@ -450,6 +450,6 @@ async function handleImage(interaction) {
                 .setDescription('The welcome image has been updated.')
                 .setImage(url)
         ],
-        ephemeral: true
+        flags: 64 // Ephemeral
     });
 }
