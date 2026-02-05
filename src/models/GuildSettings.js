@@ -23,6 +23,11 @@ const guildSettingsSchema = new mongoose.Schema({
         type: String,
         default: 'https://i.pinimg.com/736x/2e/4f/8c/2e4f8c9b3e7a1d5c4b2a8f6e3d9c7b1a.jpg'
     },
+    // Welcome Role (auto-assigned to new members)
+    welcomeRoleId: {
+        type: String,
+        default: '1376659696311730207'
+    },
     // Channel References for Welcome
     rulesChannelId: {
         type: String,

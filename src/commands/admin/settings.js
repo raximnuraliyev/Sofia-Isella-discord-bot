@@ -63,6 +63,16 @@ module.exports = {
                         .addChannelTypes(ChannelType.GuildText)
                 )
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('welcome-role')
+                .setDescription('Set the role to auto-assign to new members')
+                .addRoleOption(option =>
+                    option.setName('role')
+                        .setDescription('The welcome role')
+                        .setRequired(true)
+                )
+        )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     
     async execute(interaction) {
@@ -93,6 +103,8 @@ module.exports = {
                 return handleBoosterRole(interaction);
             case 'booster-channel':
                 return handleBoosterChannel(interaction);
+            case 'welcome-role':
+                return handleWelcomeRole(interaction);
         }
     }
 };
@@ -113,6 +125,7 @@ async function handleView(interaction) {
             { name: 'Server Booster Role', value: getRole(settings.serverBoosterRoleId), inline: true },
             { name: 'Booster Colors Channel', value: getChannel(settings.boosterColorsChannelId), inline: true },
             { name: 'Welcome Channel', value: getChannel(settings.welcomeChannelId), inline: true },
+            { name: 'Welcome Role', value: getRole(settings.welcomeRoleId), inline: true },
             { name: 'Welcome Enabled', value: settings.welcomeEnabled ? 'Yes' : 'No', inline: true },
             { name: 'Color Roles Count', value: `${settings.boosterColorRoles.length}`, inline: true }
         )
@@ -202,6 +215,23 @@ async function handleBoosterChannel(interaction) {
                 .setColor(config.colors.success)
                 .setTitle('Booster Colors Channel Updated')
                 .setDescription(`${channel} has been set as the booster colors channel.`)
+        ]
+    });
+}
+
+async function handleWelcomeRole(interaction) {
+    const role = interaction.options.getRole('role');
+    
+    await updateGuildSettings(interaction.guild.id, {
+        welcomeRoleId: role.id
+    });
+    
+    await interaction.reply({
+        embeds: [
+            new EmbedBuilder()
+                .setColor(config.colors.success)
+                .setTitle('Welcome Role Updated')
+                .setDescription(`${role} will now be automatically assigned to new members.`)
         ]
     });
 }

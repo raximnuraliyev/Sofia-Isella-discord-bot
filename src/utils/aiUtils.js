@@ -4,15 +4,28 @@ const config = require('../config/config');
 
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Free models to rotate through (verified working models as of 2026)
+// Working free models on OpenRouter (verified Feb 2026)
+// Using exact model IDs from OpenRouter's API
 const FREE_MODELS = [
-    'nousresearch/hermes-3-llama-3.1-405b:free',
-    'meta-llama/llama-3.3-70b-instruct:free',
-    'google/gemini-2.0-flash-exp:free',
-    'deepseek/deepseek-chat:free',
-    'mistralai/mistral-7b-instruct:free',
-    'openchat/openchat-7b:free',
-    'huggingfaceh4/zephyr-7b-beta:free'
+    'meta-llama/llama-3.2-3b-instruct:free',
+    'meta-llama/llama-3.2-1b-instruct:free',
+    'qwen/qwen-2.5-7b-instruct:free',
+    'google/gemma-2-9b-it:free',
+    'microsoft/phi-3-mini-128k-instruct:free',
+    'huggingfaceh4/zephyr-7b-beta:free',
+    'mistralai/mistral-7b-instruct-v0.1:free'
+];
+
+// Fallback responses when all AI models fail
+const SOFIA_FALLBACK_RESPONSES = [
+    "I'm lost in thought right now... like a melody that's just out of reach. Can we talk again in a moment?",
+    "The words seem to be dancing away from me tonight. Give me a little time, and I'll find them again.",
+    "Sometimes the best conversations happen in comfortable silence. Let's try again soon?",
+    "My thoughts are like scattered stars tonight. I need a moment to gather them into something beautiful.",
+    "Even songwriters need a pause between verses. I'll be back with you shortly.",
+    "The music in my mind is a bit too loud right now. Let me quiet it down and we can chat again.",
+    "I feel like I'm between chapters right now. Give me a moment to turn the page?",
+    "Some moments are meant for quiet reflection. Let's reconnect in just a bit."
 ];
 
 let currentModelIndex = 0;
@@ -225,24 +238,43 @@ async function generateAIResponse(userMessage, conversationHistory = []) {
     } catch (error) {
         console.error('AI Response Error:', error);
         
-        const fallbackResponses = [
-            "I'm lost in thought right now... perhaps we can talk later?",
-            "The words seem to be escaping me at the moment. Let's reconnect soon.",
-            "Sometimes silence speaks louder than words. I'll find my voice again shortly.",
-            "My thoughts are like scattered stars tonight. Give me a moment to gather them."
-        ];
-        
         return {
             success: false,
-            content: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
+            content: SOFIA_FALLBACK_RESPONSES[Math.floor(Math.random() * SOFIA_FALLBACK_RESPONSES.length)],
             error: error.message,
             cached: false
         };
     }
 }
 
+/**
+ * Fetch available free models from OpenRouter (for debugging)
+ */
+async function fetchAvailableModels() {
+    try {
+        const fetch = (await import('node-fetch')).default;
+        const response = await fetch('https://openrouter.ai/api/v1/models', {
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`
+            }
+        });
+        
+        if (!response.ok) return [];
+        
+        const data = await response.json();
+        return data.data
+            .filter(m => m.id.endsWith(':free'))
+            .map(m => m.id);
+    } catch (error) {
+        console.error('Error fetching models:', error);
+        return [];
+    }
+}
+
 module.exports = {
     generateAIResponse,
     SOFIA_SYSTEM_PROMPT,
-    FREE_MODELS
+    FREE_MODELS,
+    SOFIA_FALLBACK_RESPONSES,
+    fetchAvailableModels
 };

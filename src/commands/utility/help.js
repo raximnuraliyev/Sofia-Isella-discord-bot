@@ -49,8 +49,10 @@ const COMMANDS = {
             category: '🚫 Content Filter',
             commands: [
                 { name: '/banned-words add [word]', description: 'Add a word to the server\'s banned words list' },
-                { name: '/banned-words remove [word]', description: 'Remove a word from the banned words list' },
-                { name: '/banned-words list', description: 'View all server-specific banned words' }
+                { name: '/banned-words remove [word]', description: 'Remove a word or exclude a global word' },
+                { name: '/banned-words list', description: 'View all server-specific banned words' },
+                { name: '/banned-words restore [word]', description: 'Re-enable a previously excluded global word' },
+                { name: '/banned-words excluded', description: 'View all excluded global words for this server' }
             ]
         },
         {
@@ -80,7 +82,8 @@ const COMMANDS = {
                 { name: '/settings admin-role [role]', description: 'Set which role has admin permissions' },
                 { name: '/settings log-channel [channel]', description: 'Set the channel for mod action logs' },
                 { name: '/settings booster-role [role]', description: 'Set the server booster role' },
-                { name: '/settings booster-channel [channel]', description: 'Set the booster colors selection channel' }
+                { name: '/settings booster-channel [channel]', description: 'Set the booster colors selection channel' },
+                { name: '/settings welcome-role [role]', description: 'Set the role to auto-assign to new members' }
             ]
         },
         {
