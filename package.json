@@ -1,0 +1,26 @@
+{
+  "name": "sofia-isella-discord-bot",
+  "version": "1.0.0",
+  "description": "Custom Discord bot for Sofia Isella fan server",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "sofia-isella"
+  ],
+  "author": "Sofia Isella Fan Server",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "mongoose": "^8.0.3",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
